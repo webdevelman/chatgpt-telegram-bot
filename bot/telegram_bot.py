@@ -1046,20 +1046,28 @@ class ChatGPTTelegramBot:
         if not concert:
             await update.message.reply_text("Пожалуйста, укажите концерт после команды.")
             return
-        from plugins import concerts
+        import sys
+        import os
+        sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+        import plugins.concerts as concerts
         response = concerts.add_concert(concert)
         await update.message.reply_text(response)
 
     async def list_concerts(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        from plugins import concerts
+        import sys
+        import os
+        sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+        import plugins.concerts as concerts
         response = concerts.list_concerts()
         await update.message.reply_text(response)
 
     async def clear_concerts(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        from plugins import concerts
+        import sys
+        import os
+        sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+        import plugins.concerts as concerts
         response = concerts.clear_concerts()
         await update.message.reply_text(response)
-
 
     def run(self):
         """
@@ -1101,5 +1109,11 @@ class ChatGPTTelegramBot:
         application.add_handler(CommandHandler("clearconcerts", self.clear_concerts))
 
         application.add_error_handler(error_handler)
+
+        import os
+        print("=== DEBUG INFO ===")
+        print("PWD:", os.getcwd())  # текущая рабочая директория
+        print("FILES:", os.listdir())  # список файлов в этой директории
+        print("==================")
 
         application.run_polling()
