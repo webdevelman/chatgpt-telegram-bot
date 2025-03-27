@@ -3,6 +3,8 @@ import asyncio
 import logging
 import os
 import io
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from uuid import uuid4
 from telegram import BotCommandScopeAllGroupChats, Update, constants
@@ -1046,26 +1048,17 @@ class ChatGPTTelegramBot:
         if not concert:
             await update.message.reply_text("Пожалуйста, укажите концерт после команды.")
             return
-        import sys
-        import os
-        sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-        import plugins.concerts as concerts
+        from plugins import concerts
         response = concerts.add_concert(concert)
         await update.message.reply_text(response)
 
     async def list_concerts(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        import sys
-        import os
-        sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-        import plugins.concerts as concerts
+        from plugins import concerts
         response = concerts.list_concerts()
         await update.message.reply_text(response)
 
     async def clear_concerts(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        import sys
-        import os
-        sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-        import plugins.concerts as concerts
+        from plugins import concerts
         response = concerts.clear_concerts()
         await update.message.reply_text(response)
 
